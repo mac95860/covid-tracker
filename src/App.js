@@ -3,11 +3,12 @@ import './App.css';
 import InfoBox from './components/InfoBox';
 import Map from './components/Map';
 import Table from './components/Table/Table';
+import LineGraph from './components/LineGraph/LineGraph';
 import { sortData } from './utilities/util';
-import { MenuItem, FormControl, Select, CardContent, Card} from '@material-ui/core';
+import { MenuItem, FormControl, Select, CardContent, Card } from '@material-ui/core';
 
 function App() {
-  // https://disease.sh/v3/covid-19/countries
+  
   const [countries, setCountries] = useState([]);
   const [country, setCountry] = useState('worldwide');
   const [countryInfo, setCountryInfo] = useState({});
@@ -55,8 +56,6 @@ function App() {
         setCountryInfo(data);
       })
   }
-
-  //console.log('COUntrY INFO >>>>', countryInfo);
   
   return (
     <div className="app">
@@ -91,7 +90,7 @@ function App() {
           <h3>Live Cases by Country</h3>
           <Table  countries = {tableData}/>
           <h3>Worldwide new Cases</h3>
-          {/* Graph */}
+          <LineGraph />
         </CardContent>
       </Card>
     
