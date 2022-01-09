@@ -4,6 +4,7 @@ import InfoBox from './components/InfoBox';
 import Map from './components/Map';
 import Table from './components/Table/Table';
 import LineGraph from './components/LineGraph/LineGraph';
+import "leaflet/dist/leaflet.css";
 import { sortData } from './utilities/util';
 import { MenuItem, FormControl, Select, CardContent, Card } from '@material-ui/core';
 
@@ -13,6 +14,9 @@ function App() {
   const [country, setCountry] = useState('worldwide');
   const [countryInfo, setCountryInfo] = useState({});
   const [tableData, setTableData] = useState([]);
+  const [mapCenter, setMapCenter] = useState({ lat: 34.80746, lng: -40.4796 });
+  const [mapZoom, setMapZoom] = useState(3);
+  const [imgURL, setimgURL] = useState();
 // =============================== Set the Default Results to "WorldWide" =============================
   useEffect(() => {
     fetch("https://disease.sh/v3/covid-19/all")
@@ -52,8 +56,12 @@ function App() {
     await fetch(url)
       .then(res => res.json())
       .then(data => {
+        console.log(data);
         setCountry(countryCode);
         setCountryInfo(data);
+        setMapCenter([data.countryInfo.lat, data.countryInfo.long]);
+        setMapZoom(5);
+        setimgURL(data.countryInfo.flag)
       })
   }
   
@@ -75,6 +83,14 @@ function App() {
             </FormControl>
           </div>
 
+          {country === 'worldwide' ? <></> :
+            <div className = "country__name">
+              <h1>{countryInfo.country}</h1>
+              <img src = {imgURL} alt = "country's flag" className = "country__name__flag"/>
+            </div>
+          }      
+          
+
           <div className = "app__stats">
                 <InfoBox title = "Coronavirus cases" total = {countryInfo.cases} cases = {countryInfo.todayCases}/>
                 <InfoBox title = "Recovered" total = {countryInfo.todayRecovered} cases = {countryInfo.todayRecovered}/>
@@ -82,7 +98,10 @@ function App() {
                 {/* vaccinated ? */}
           </div>
           
-          <Map/>
+          <Map
+            center = {mapCenter}
+            zoom = {mapZoom}
+          />
       </div>
       
       <Card className = "app__right">

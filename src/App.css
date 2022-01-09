@@ -27,6 +27,14 @@ body {
   justify-content: space-between;
 }
 
+.country__name {
+  display: flex;
+  align-items: center;
+  width: 30rem;
+  justify-content: space-between;
+  
+}
+
 @media (max-width: 99rem) {
   .app {
     flex-direction: column;

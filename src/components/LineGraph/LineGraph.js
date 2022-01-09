@@ -2,16 +2,18 @@
  import { Line } from "react-chartjs-2";
  import numeral from 'numeral';
  import Chart from 'chart.js/auto';
+ import "./LineGraph.css";
 
  const options = {
-    legend: {
-      display: false,
+    plugins: {
+        legend: false
     },
     elements: {
       point: {
         radius: 0,
       },
     },
+    
     maintainAspectRatio: false,
     tooltips: {
       mode: "index",
@@ -22,6 +24,7 @@
         },
       },
     },
+    
     scales: {
       xAxes: [
         {
@@ -35,7 +38,7 @@
       yAxes: [
         {
           gridLines: {
-            display: false,
+            display: false
           },
           ticks: {
             // Include a dollar sign in the ticks
@@ -64,25 +67,24 @@
     return chartData;
   };
   
-  function LineGraph({ casesType }) {
+  function LineGraph({ casesType = "cases" }) {
     const [data, setData] = useState({});
   
     useEffect(() => {
       const fetchData = async () => {
         await fetch("https://disease.sh/v3/covid-19/historical/all?lastdays=120")
-          .then((response) => {
-            return response.json();
+          .then(res => {
+            return res.json();
           })
           .then((data) => {
             let chartData = buildChartData(data, 'cases');
             setData(chartData);
             console.log(chartData);
-            // buildChart(chartData);
           });
       };
   
       fetchData();
-    }, []);
+    }, [casesType]);
   
     return (
       <div>
